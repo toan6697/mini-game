@@ -2,9 +2,14 @@
   <div id="app">
     <div class="wrapper clearfix">
             
-            <Players></Players>
+            <Players 
+            v-bind:scorePlayer="scorePlayer" 
+            v-bind:currentScore="currentScore"
+            v-bind:activePlayer="activePlayer"
+            >
+            </Players>
 
-            <Controls></Controls>
+            <Controls v-bind:isPlaying="isPlaying"></Controls>
             <Dices></Dices>
             
         </div>
@@ -21,7 +26,10 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+       isPlaying : false,
+       scorePlayer : [13, 30],
+       currentScore :30,
+       activePlayer :1
     }
   },
   components : {

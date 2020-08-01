@@ -15,6 +15,9 @@
             return {
 
             }
+        },
+        props : {
+            isPlaying : { type:Boolean, default: false }
         }
     }
 </script>
