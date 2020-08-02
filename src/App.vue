@@ -9,11 +9,11 @@
             >
             </Players>
 
-            <Controls v-bind:isPlaying="isPlaying"></Controls>
-            <Dices></Dices>
+            <Controls v-bind:isPlaying="isPlaying" v-on:startGame="startGame()"></Controls>
+            <Dices v-bind:dices="dices"></Dices>
             
-        </div>
-
+    </div>
+    <Popup v-bind:isPlaying="isPlaying" v-on:confirm="confirm"></Popup>
   </div>
 </template>
 
@@ -21,6 +21,7 @@
 import Players from "./components/Players";
 import Controls from "./components/Controls";
 import Dices from "./components/Dices";
+import Popup from "./components/Popup";
 
 export default {
   name: 'app',
@@ -28,14 +29,28 @@ export default {
     return {
        isPlaying : false,
        scorePlayer : [13, 30],
-       currentScore :30,
-       activePlayer :1
+       currentScore :30, // điểm hiện tại
+       activePlayer :1, // xác định người chơi
+       dices : [2, 2]  // số điểm trên xúc sắc sau khi gieo 
     }
   },
   components : {
     Players,
     Controls,
-    Dices
+    Dices,
+    Popup
+  },
+  methods: {
+    startGame(){
+        this.isPlaying = true;
+    },
+    confirm(){
+        this.isPlaying = false;
+        this.scorePlayer = [0 , 0];
+        this.currentScore = 0;
+        this.activePlayer =0; 
+        this.dices= [1, 1];
+    }
   }
 }
 </script>
