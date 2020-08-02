@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="control btn-new"><i class="ion-ios-plus-outline"></i>New game</button>
+        <button class="control btn-new" v-on:click="handleButtonNewGame()"><i class="ion-ios-plus-outline"></i>New game</button>
         <button class="control btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
         <button class="control btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
         
@@ -18,6 +18,11 @@
         },
         props : {
             isPlaying : { type:Boolean, default: false }
+        },
+        methods : {
+            handleButtonNewGame(){
+                this.$emit('startGame');
+            }
         }
     }
 </script>
