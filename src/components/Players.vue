@@ -30,7 +30,7 @@
         props : {
             scorePlayer : { type: Array, default: [0 ,0] },
             currentScore : { type : Number, default : 0 },
-            activePlayer : { type:Number, default :0 }
+            activePlayer : { type:Number, default :0 },
             
         }
     }
