@@ -9,8 +9,11 @@
             >
             </Players>
 
-            <Controls v-bind:isPlaying="isPlaying" v-on:startGame="startGame()"></Controls>
-            <Dices v-bind:dices="dices"></Dices>
+            <Controls v-bind:isPlaying="isPlaying"
+                      v-on:startGame="startGame()"
+                       v-on:handleRollDice="handleRollDice()">
+            </Controls>
+            <Dices v-bind:dices="dices" ></Dices>
             
     </div>
     <Popup v-bind:isPlaying="isPlaying" v-on:confirm="confirm"></Popup>
@@ -28,6 +31,7 @@ export default {
   data () {
     return {
        isPlaying : false,
+       startGaming : false,
        scorePlayer : [13, 30],
        currentScore :30, // điểm hiện tại
        activePlayer :1, // xác định người chơi
@@ -46,10 +50,52 @@ export default {
     },
     confirm(){
         this.isPlaying = false;
+        this.startGaming = true;
         this.scorePlayer = [0 , 0];
         this.currentScore = 0;
         this.activePlayer =0; 
-        this.dices= [1, 1];
+        this.dices= [2, 2];
+    },
+    handleRollDice(){
+        if(this.startGaming){
+           let firstDice = Math.ceil(Math.random() * 6);
+           let secondDice = Math.ceil(Math.random() * 6);
+           
+           //console.log(firstDice, secondDice);
+           this.dices = [ firstDice, secondDice ];
+
+           if(firstDice === 1 || secondDice === 1){
+             var that = this;
+             setTimeout( function(){
+                 alert(`người chơi ${that.activePlayer +1} đã quay vào 1`);
+             }, 10 )
+             //alert('đổi lượt chơi'); // bị dừng ở đây do nó chờ hàm này chạy xong ms chạy tiếp xuống dưới
+             firstDice = 0;
+             secondDice = 0;
+             
+             //console.log(this.activePlayer);
+               if(this.activePlayer  ===  0){
+                 this.activePlayer = 1;
+                 this.currentScore = 0;
+                 let sum = firstDice + secondDice;
+                 this.currentScore += sum;
+                 return;
+               }
+               if(this.activePlayer === 1){
+                 this.activePlayer = 0;
+                 this.currentScore = 0;
+                 let sum = firstDice + secondDice;
+                 this.currentScore += sum;
+                 return;
+               }
+           }else{
+              let sum = firstDice + secondDice;
+              this.currentScore += sum;
+           }
+        }
+        else{
+          alert('Vui lòng ấn new game để bắt đầu chơi');
+        }
     }
   }
 }
