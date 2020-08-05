@@ -11,7 +11,8 @@
 
             <Controls v-bind:isPlaying="isPlaying"
                       v-on:startGame="startGame()"
-                       v-on:handleRollDice="handleRollDice()">
+                       v-on:handleRollDice="handleRollDice()" 
+                       v-on:handleHoldScore="handleHoldScore()">
             </Controls>
             <Dices v-bind:dices="dices" ></Dices>
             
@@ -96,6 +97,19 @@ export default {
         else{
           alert('Vui lòng ấn new game để bắt đầu chơi');
         }
+    },
+    handleHoldScore(){
+      if(this.startGaming){
+         //this.activePlayer = this.activePlayer === 0 ? 0 : 1;
+          this.scorePlayer[this.activePlayer] = this.scorePlayer[this.activePlayer] + this.currentScore;
+          console.log(this.scorePlayer);
+          
+          this.activePlayer = this.activePlayer === 0 ? 1: 0;
+          this.currentScore = 0;
+          return;
+      }else{
+         alert('Vui lòng ấn new game để bắt đầu chơi');
+      }
     }
   }
 }

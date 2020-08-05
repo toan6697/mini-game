@@ -2,7 +2,7 @@
     <div>
         <button class="control btn-new" v-on:click="handleButtonNewGame()"><i class="ion-ios-plus-outline"></i>New game</button>
         <button class="control btn-roll"><i class="ion-ios-loop" v-on:click="rollDice()"></i>Roll dice</button>
-        <button class="control btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
+        <button class="control btn-hold"><i class="ion-ios-download-outline" v-on:click="holdScore()"></i>Hold</button>
         
         <input type="number" placeholder="Final score" class="final-score">
     </div>
@@ -26,6 +26,9 @@
             rollDice(){
                 console.log('roll dice');
                 this.$emit('handleRollDice');
+            },
+            holdScore(){
+                this.$emit('handleHoldScore');
             }
         }
     }
