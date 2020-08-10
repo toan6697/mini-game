@@ -1,7 +1,7 @@
 <template>
     <div>
-            <div class="player-panel" v-bind:class="{ active : activePlayer === 0 ? true : false }">
-                <div class="player-name ">Player 1</div>
+            <div class="player-panel" v-bind:class="{ active : activePlayer === 0 ? true : false}">
+                <div class="player-name ">{{ findPlayerWinner(0) }}</div>
                 <div class="player-score">{{ scorePlayer[0] }}</div>
                 <div class="player-current-box">
                     <div class="player-current-label">Current</div>
@@ -9,8 +9,8 @@
                 </div>
             </div>
             
-            <div class="player-panel" v-bind:class="{ active : activePlayer === 1 ? true : false }">
-                <div class="player-name">Player 2</div>
+            <div class="player-panel" v-bind:class="{ active : activePlayer === 1 ? true : false}">
+                <div class="player-name">{{ findPlayerWinner(1) }}</div>
                 <div class="player-score">{{ scorePlayer[1] }}</div>
                 <div class="player-current-box">
                     <div class="player-current-label">Current</div>
@@ -31,7 +31,28 @@
             scorePlayer : { type: Array, default: [0 ,0] },
             currentScore : { type : Number, default : 0 },
             activePlayer : { type:Number, default :0 },
-            
+            finalScore : { type : Number, default : 100 },
+            startGaming : { type : Boolean, default: false }
+        },
+        methods : {
+            isWinner() {
+                if(this.scorePlayer[0] >= this.finalScore || this.scorePlayer[1] >= this.finalScore){ 
+                    this.$emit('changeStartGaming');
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            findPlayerWinner(index){
+                var result = this.isWinner();
+                //console.log( this.startGaming, index, result, this.activePlayer);
+                if( this.activePlayer === index &&  result){
+                    return "Winner" ;
+                }
+                else {
+                    return `Player ${index +1}`;
+                }
+            }
         }
     }
 </script>

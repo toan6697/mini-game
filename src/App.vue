@@ -1,18 +1,25 @@
 <template>
   <div id="app">
     <div class="wrapper clearfix">
-            
             <Players 
             v-bind:scorePlayer="scorePlayer" 
             v-bind:currentScore="currentScore"
             v-bind:activePlayer="activePlayer"
+            v-bind:finalScore="finalScore"
+            v-bind:startGaming="startGaming"
+            v-on:changeStartGaming="changeStartGaming"
             >
             </Players>
 
             <Controls v-bind:isPlaying="isPlaying"
+                      v-bind:finalScore="finalScore"
+                      v-bind:startGaming="startGaming"
                       v-on:startGame="startGame()"
-                       v-on:handleRollDice="handleRollDice()" 
-                       v-on:handleHoldScore="handleHoldScore()">
+                      v-on:handleRollDice="handleRollDice()" 
+                      v-on:handleHoldScore="handleHoldScore()" 
+                      v-on:handleWinner="handleWinner" 
+                   
+                    >
             </Controls>
             <Dices v-bind:dices="dices" ></Dices>
             
@@ -33,10 +40,12 @@ export default {
     return {
        isPlaying : false,
        startGaming : false,
-       scorePlayer : [13, 30],
-       currentScore :30, // điểm hiện tại
+       scorePlayer : [0, 0],
+       currentScore : 0, // điểm hiện tại
        activePlayer :1, // xác định người chơi
-       dices : [2, 2]  // số điểm trên xúc sắc sau khi gieo 
+       dices : [2, 2] , // số điểm trên xúc sắc sau khi gieo
+       finalScore : 0 ,
+       winner : false
     }
   },
   components : {
@@ -73,22 +82,13 @@ export default {
              //alert('đổi lượt chơi'); // bị dừng ở đây do nó chờ hàm này chạy xong ms chạy tiếp xuống dưới
              firstDice = 0;
              secondDice = 0;
+
+                this.activePlayer = this.activePlayer === 0 ? 1: 0;
+                this.currentScore = 0;
+                let sum = firstDice + secondDice;
+                this.currentScore += sum;
+             return;              
              
-             //console.log(this.activePlayer);
-               if(this.activePlayer  ===  0){
-                 this.activePlayer = 1;
-                 this.currentScore = 0;
-                 let sum = firstDice + secondDice;
-                 this.currentScore += sum;
-                 return;
-               }
-               if(this.activePlayer === 1){
-                 this.activePlayer = 0;
-                 this.currentScore = 0;
-                 let sum = firstDice + secondDice;
-                 this.currentScore += sum;
-                 return;
-               }
            }else{
               let sum = firstDice + secondDice;
               this.currentScore += sum;
@@ -100,15 +100,30 @@ export default {
     },
     handleHoldScore(){
       if(this.startGaming){
-         //this.activePlayer = this.activePlayer === 0 ? 0 : 1;
-          this.scorePlayer[this.activePlayer] = this.scorePlayer[this.activePlayer] + this.currentScore;
-          console.log(this.scorePlayer);
-          
-          this.activePlayer = this.activePlayer === 0 ? 1: 0;
-          this.currentScore = 0;
-          return;
+        this.scorePlayer[this.activePlayer] = this.scorePlayer[this.activePlayer] + this.currentScore;
+        
+        console.log(this.scorePlayer);
+        if(this.winner === true){
+           this.activePlayer = this.activePlayer === 0 ? 1: 0;
+           this.currentScore = 0;  
+        }   
+        //return;
       }else{
          alert('Vui lòng ấn new game để bắt đầu chơi');
+      }
+    },
+    handleWinner(value){
+        var number = parseInt(value);
+        if(isNaN(number)){
+           this.finalScore = " ";
+        }else{
+          this.finalScore = number;
+        }
+    },
+    changeStartGaming(){
+      if(this.startGaming){
+          this.startGaming = false;
+          this.winner = true;
       }
     }
   }

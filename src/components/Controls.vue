@@ -4,7 +4,7 @@
         <button class="control btn-roll"><i class="ion-ios-loop" v-on:click="rollDice()"></i>Roll dice</button>
         <button class="control btn-hold"><i class="ion-ios-download-outline" v-on:click="holdScore()"></i>Hold</button>
         
-        <input type="number" placeholder="Final score" class="final-score">
+        <input type="number" v-bind:disabled="startGaming"  v-bind:value="finalScore" v-on:input="getFinalScore($event)"  placeholder="Final score" class="final-score">
     </div>
 </template>
 
@@ -13,11 +13,13 @@
         name : 'Controls',
         data(){
             return {
-
+                currentFinalScore : 10
             }
         },
         props : {
-            isPlaying : { type:Boolean, default: false }
+            isPlaying : { type:Boolean, default: false },
+            finalScore : { type : [Number, String], default : 10 },
+            startGaming : { type : Boolean, default : false }
         },
         methods : {
             handleButtonNewGame(){
@@ -28,7 +30,12 @@
                 this.$emit('handleRollDice');
             },
             holdScore(){
+                console.log('abc');
                 this.$emit('handleHoldScore');
+            },
+            getFinalScore($event){
+            this.currentFinalScore = $event.target.value;
+            this.$emit('handleWinner', this.currentFinalScore );
             }
         }
     }
